@@ -1,3 +1,25 @@
+
+const rock = document.querySelector('#rock');
+const paper = document.querySelector('#paper');
+const scissors = document.querySelector('#scissors');
+
+rock.addEventListener('click', function (e) {
+    game(e.target.id);
+});
+paper.addEventListener('click', function (e) {
+    game(e.target.id);
+});
+scissors.addEventListener('click', function (e) {
+    game(e.target.id);
+});
+let playerScore = 0;
+let compScore = 0
+let round = 1;
+
+
+//const score = document.querySelector('#container');
+
+
 function getComputerChoice() {
     let choice = Math.floor(Math.random() * 3);
     if (choice === 1) {
@@ -37,27 +59,31 @@ function letsFight(playerSelection, computerSelection) {
     }
 }
 
-function game(){
-    let score = 0;
-    for (let i = 0; i < 5; i++){
-        let computerSelection = getComputerChoice();
-        let playerSelection = prompt("Choose Rock, Paper, or Scissors").toLowerCase();
-        let result = letsFight(playerSelection, computerSelection);
-        console.log(result);
-        if(result[4] === "W") {
-            score++;
-        } else if(result[4] === " "){
-            console.log("HERHE")
-            i--;
-        }
-        console.log(`Score: ${score}`);
-        console.log(`Round: ${i}`);
-    }
-    if(score >= 3){
-        console.log(`You Win! You won ${score} out of 5 games`)
-    } else {
-        console.log(`You Loose! You Lost ${5 - score} out of 5 games`)
-    }
+function removeEventListener(){
+    rock.disabled = true;
+    paper.disabled = true;
+    scissors.disabled = true;
+    
 }
 
-game();
+function game(playerSelection){
+    round++;
+    let computerSelection = getComputerChoice();
+    let result = letsFight(playerSelection, computerSelection);
+    if(result[4] === "W") {
+        playerScore++;
+    } else if(result[4] === "L") {
+        compScore++;
+    }
+    document.getElementById("round").innerHTML = `Round: ${round}`;
+    document.getElementById("result").innerHTML = `${result}`;
+    document.getElementById("playerScore").innerHTML = `Score: ${playerScore}`;
+    document.getElementById("compScore").innerHTML = `Comp: ${compScore}`;
+    if(playerScore > 4) {
+        document.getElementById("result").innerHTML = "Congratulations You WIN!";
+        removeEventListener();
+    } else if (compScore > 4){
+        document.getElementById("result").innerHTML = "You lose you fucken LOOSER!";
+        removeEventListener();
+    }
+}

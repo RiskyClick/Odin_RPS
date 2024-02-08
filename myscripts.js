@@ -80,8 +80,8 @@ function playGame(){
         game++
         if (game >= 5){
             getWinner(score)
+            return
         }    
     }
-    return
 }
 playGame()
